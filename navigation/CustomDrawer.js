@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, TouchableOpacity, View } from 'react-native';
+import { Image, TouchableOpacity, View, Text } from 'react-native';
 import {
   createDrawerNavigator,
   DrawerContentScrollView,
@@ -34,6 +34,24 @@ const CustomDrawerContent = ({ navigation }) => {
             />
           </TouchableOpacity>
         </View>
+
+        <TouchableOpacity
+          style={{ flexDirection: 'row', marginTop: SIZES.radius }}
+          onPress={() => console.log('profile screen')}
+        >
+          <Image
+            source={dummyData.myProfile?.profile_image}
+            style={{ height: 50, width: 50, borderRadius: SIZES.radius }}
+          />
+          <View style={{ marginLeft: SIZES.radius }}>
+            <Text style={{ color: COLORS.white, ...FONTS.h3 }}>
+              {dummyData.myProfile.name}
+            </Text>
+            <Text style={{ color: COLORS.white, ...FONTS.body4 }}>
+              View Your Profile
+            </Text>
+          </View>
+        </TouchableOpacity>
       </View>
     </DrawerContentScrollView>
   );
