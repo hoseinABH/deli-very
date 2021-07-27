@@ -3,7 +3,7 @@ import { icons, images } from './';
 const myProfile = {
   name: 'hosein',
   profile_image: images.profile,
-  address: 'No. 88, Jln Padungan, Kuching',
+  address: 'No. 03, Tehran Tajrish, Shahriary',
 };
 
 const categories = [
