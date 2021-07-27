@@ -14,10 +14,12 @@ import {
   COLORS,
 } from '../constants';
 import Animated from 'react-native-reanimated';
+import { useSelector, useDispatch } from 'react-redux';
+import { setSelectedTab } from '../stores/tab/tabActions';
 
 const Drawer = createDrawerNavigator();
 
-const CustomDrawerItem = ({ label, icon }) => {
+const CustomDrawerItem = ({ label, icon, isFocused, onPress }) => {
   return (
     <TouchableOpacity
       style={{
@@ -27,8 +29,9 @@ const CustomDrawerItem = ({ label, icon }) => {
         alignItems: 'center',
         paddingLeft: SIZES.radius,
         borderRadius: SIZES.base,
-        // backgroundColor:
+        backgroundColor: isFocused ? COLORS.transparentBlack1 : null,
       }}
+      onPress={onPress}
     >
       <Image
         source={icon}
@@ -43,6 +46,9 @@ const CustomDrawerItem = ({ label, icon }) => {
 };
 
 const CustomDrawerContent = ({ navigation }) => {
+  const disptch = useDispatch();
+  const { selectedTab } = useSelector((state) => state.tabReducer);
+
   return (
     <DrawerContentScrollView
       scrollEnabled={true}
@@ -80,18 +86,41 @@ const CustomDrawerContent = ({ navigation }) => {
         </TouchableOpacity>
 
         <View style={{ flex: 1, marginTop: SIZES.padding }}>
-          <CustomDrawerItem label={constants.screens.home} icon={icons.home} />
           <CustomDrawerItem
+            isFocused={selectedTab === constants.screens.home}
+            label={constants.screens.home}
+            icon={icons.home}
+            onPress={() => {
+              disptch(setSelectedTab(constants.screens.home));
+              navigation.navigate(constants.screens.main_layout);
+            }}
+          />
+          <CustomDrawerItem
+            isFocused={selectedTab === constants.screens.wallet}
             label={constants.screens.wallet}
             icon={icons.wallet}
+            onPress={() => {
+              disptch(setSelectedTab(constants.screens.wallet));
+              navigation.navigate(constants.screens.wallet);
+            }}
           />
           <CustomDrawerItem
+            isFocused={selectedTab === constants.screens.notification}
             label={constants.screens.notification}
             icon={icons.notification}
+            onPress={() => {
+              disptch(setSelectedTab(constants.screens.notification));
+              navigation.navigate(constants.screens.notification);
+            }}
           />
           <CustomDrawerItem
+            isFocused={selectedTab === constants.screens.favourite}
             label={constants.screens.favourite}
             icon={icons.favourite}
+            onPress={() => {
+              disptch(setSelectedTab(constants.screens.favourite));
+              navigation.navigate(constants.screens.favourite);
+            }}
           />
 
           <View
@@ -119,7 +148,6 @@ const CustomDrawerContent = ({ navigation }) => {
 
 const CustomDrawer = () => {
   const [progress, setProgress] = useState(new Animated.Value(0));
-
   const scale = Animated.interpolateNode(progress, {
     inputRange: [0, 1],
     outputRange: [1, 0.8],
