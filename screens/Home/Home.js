@@ -7,48 +7,10 @@ import {
   Text,
   FlatList,
 } from 'react-native';
+import FilterModal from '../../components/FilterModal';
 import HorizontalFoodCard from '../../components/HorizontalFoodCard';
 import VerticalFoodCard from '../../components/VerticalFoodCard';
 import { FONTS, icons, COLORS, SIZES, dummyData } from '../../constants';
-
-const renderSearch = () => {
-  return (
-    <View
-      style={{
-        flexDirection: 'row',
-        height: 60,
-        alignItems: 'center',
-        marginHorizontal: SIZES.padding,
-        marginVertical: SIZES.base,
-        paddingHorizontal: SIZES.radius,
-        borderRadius: SIZES.radius,
-        backgroundColor: COLORS.lightGray2,
-      }}
-    >
-      <Image
-        source={icons.search}
-        style={{ height: 20, width: 20, tintColor: COLORS.black }}
-      />
-
-      <TextInput
-        style={{
-          flex: 1,
-          marginLeft: SIZES.radius,
-          ...FONTS.body3,
-          alignItems: 'center',
-        }}
-        placeholder="search something..."
-      />
-
-      <TouchableOpacity>
-        <Image
-          source={icons.filter}
-          style={{ height: 20, width: 20, tintColor: COLORS.black }}
-        />
-      </TouchableOpacity>
-    </View>
-  );
-};
 
 const Section = ({ title, onPress, children }) => {
   return (
@@ -82,6 +44,7 @@ const Home = () => {
   const [menuList, setMenuList] = useState([]);
   const [recommends, setRecommends] = useState([]);
   const [populars, setPopulars] = useState([]);
+  const [showFilterModal, setShowFilterModal] = useState(false);
 
   useEffect(() => {
     handleChangeCategory(selectedCategoryId, selectedMenuType);
@@ -288,6 +251,46 @@ const Home = () => {
       </View>
     );
   };
+
+  const renderSearch = () => {
+    return (
+      <View
+        style={{
+          flexDirection: 'row',
+          height: 60,
+          alignItems: 'center',
+          marginHorizontal: SIZES.padding,
+          marginVertical: SIZES.base,
+          paddingHorizontal: SIZES.radius,
+          borderRadius: SIZES.radius,
+          backgroundColor: COLORS.lightGray2,
+        }}
+      >
+        <Image
+          source={icons.search}
+          style={{ height: 20, width: 20, tintColor: COLORS.black }}
+        />
+
+        <TextInput
+          style={{
+            flex: 1,
+            marginLeft: SIZES.radius,
+            ...FONTS.body3,
+            alignItems: 'center',
+          }}
+          placeholder="search something..."
+        />
+
+        <TouchableOpacity onPress={() => setShowFilterModal(true)}>
+          <Image
+            source={icons.filter}
+            style={{ height: 20, width: 20, tintColor: COLORS.black }}
+          />
+        </TouchableOpacity>
+      </View>
+    );
+  };
+
   return (
     <View
       style={{
@@ -295,6 +298,13 @@ const Home = () => {
       }}
     >
       {renderSearch()}
+
+      {showFilterModal && (
+        <FilterModal
+          isVisible={showFilterModal}
+          onClose={() => setShowFilterModal(false)}
+        />
+      )}
 
       <FlatList
         data={menuList}
